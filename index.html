@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>意味関連性評定</title>
+  <meta name="description" content="英単語の既知意味と新しい意味の関連性を評定する調査です。">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/xlsx.full.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <section id="startScreen" class="panel">
+      <p class="eyebrow">Semantic Relatedness Rating</p>
+      <h1>意味関連性評定</h1>
+      <p class="lead">
+        英単語の「よく知られている意味」と「別の意味」が、意味的にどの程度関連しているかを7段階で評定してください。
+      </p>
+
+      <form id="participantForm" class="participant-form">
+        <label class="field">
+          <span>氏名</span>
+          <input id="participantName" name="participantName" type="text" autocomplete="name" required>
+        </label>
+        <label class="field">
+          <span>参加者ID</span>
+          <input id="participantId" name="participantId" type="text" autocomplete="off" required>
+        </label>
+        <label class="field">
+          <span>メモ・実施条件（任意）</span>
+          <input id="sessionNote" name="sessionNote" type="text" autocomplete="off" placeholder="例: pilot, classA">
+        </label>
+
+        <div class="instruction-box">
+          <h2>評定方法</h2>
+          <p>各画面に、同じ英単語の2つの意味が表示されます。2つの意味そのものがどれくらい関連しているかを判断してください。</p>
+          <ul>
+            <li>英単語の知識や正解を問う課題ではありません。</li>
+            <li>語感としての関連性を直感的に判断してください。</li>
+            <li>すべての項目の回答後、Excelファイルが自動でダウンロードされます。</li>
+          </ul>
+        </div>
+
+        <label class="consent-row">
+          <input id="readyCheck" type="checkbox" required>
+          <span>上記を読み、回答を開始します。</span>
+        </label>
+
+        <button class="primary-button" type="submit">開始</button>
+      </form>
+    </section>
+
+    <section id="taskScreen" class="panel hidden" aria-live="polite">
+      <div class="task-topbar">
+        <div>
+          <p class="eyebrow">Trial <span id="trialNumber">1</span> / <span id="trialTotal">20</span></p>
+          <h1 id="targetWord">word</h1>
+        </div>
+        <div class="progress-wrap" aria-hidden="true">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="meaning-grid">
+        <article class="meaning-block">
+          <p class="meaning-label">よく知られている意味</p>
+          <p id="knownGloss" class="meaning-text">...</p>
+        </article>
+        <article class="meaning-block">
+          <p class="meaning-label">別の意味</p>
+          <p id="targetGloss" class="meaning-text">...</p>
+        </article>
+      </div>
+
+      <form id="ratingForm" class="rating-form">
+        <fieldset>
+          <legend>2つの意味は、意味的にどの程度関連していますか？</legend>
+          <div id="ratingScale" class="rating-scale"></div>
+        </fieldset>
+
+        <p id="validationMessage" class="validation-message" role="alert"></p>
+
+        <div class="task-actions">
+          <button id="nextButton" class="primary-button" type="submit">次へ</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="finishScreen" class="panel hidden">
+      <p class="eyebrow">Completed</p>
+      <h1>回答が完了しました</h1>
+      <p class="lead">
+        Excelファイルのダウンロードを開始しました。保存されたファイルを実験者へ提出してください。
+      </p>
+      <div id="downloadStatus" class="download-status"></div>
+      <div class="finish-actions">
+        <button id="downloadAgainButton" class="secondary-button" type="button">もう一度ダウンロード</button>
+        <button id="resetButton" class="ghost-button" type="button">最初からやり直す</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
